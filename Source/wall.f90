@@ -3459,6 +3459,11 @@ MATERIAL_LOOP: DO N=1,N_MATS  ! Loop over all materials in the cell (alpha subsc
                   IF (ML%I_RAMP_E(J) > 0) E_LOC = 1000._EB*EVALUATE_RAMP(TMP_S,ML%I_RAMP_E(J))
             ENDIF
 
+            IF (J==1 .AND. N==1) THEN
+               WRITE(*,'(A,1X,F10.3,1X,A,1X,ES12.5,1X,A,1X,ES12.5)') &
+               'RAMP DEBUG TMP_S=', TMP_S, 'A_LOC=', A_LOC, 'E_LOC=', E_LOC
+            ENDIF
+            
             REACTION_RATE = A_LOC*(RHO_S(N))**ML%N_S(J)*EXP(-E_LOC/(R0*TMP_S))
 
             ! power term
@@ -3490,6 +3495,11 @@ MATERIAL_LOOP: DO N=1,N_MATS  ! Loop over all materials in the cell (alpha subsc
                   IF (ML%I_RAMP_E(J) > 0) E_LOC = 1000._EB*EVALUATE_RAMP(TMP_S,ML%I_RAMP_E(J))
             ENDIF
 
+            IF (J==1 .AND. N==1) THEN
+               WRITE(*,'(A,1X,F10.3,1X,A,1X,ES12.5,1X,A,1X,ES12.5)') &
+               'RAMP DEBUG TMP_S=', TMP_S, 'A_LOC=', A_LOC, 'E_LOC=', E_LOC
+            ENDIF
+            
             REACTION_RATE = A_LOC*EXP(-E_LOC/(R0*TMP_S))
 
             ! Estimate surface oxygen concentration from mass transport
