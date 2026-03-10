@@ -3204,7 +3204,9 @@ REAL(EB) :: REACTION_RATE,Y_O2,X_O2,MW(N_MATS),Y_GAS(N_MATS),Y_TMP(N_MATS),Y_SV(
             DR,R_S_0,R_S_1,H_R,H_R_B,H_S_B,H_S,LENGTH_SCALE,SUM_Y_GAS,SUM_Y_SV,NU_O2_CHAR,Y_O2_S,&
             SUM_Y_SV_SMIX(N_TRACKED_SPECIES),X_L_SUM,RHO_DOT_EXTRA,MFLUX_MAX,RHO_FILM,CP_FILM,PR_FILM,K_FILM,&
             RHO_DOT,RHO_DOT_REAC(MAX_REACTIONS),RHO_DOT_REAC_SUM,H_MASS_DNS
-REAL(EB) :: A_LOC, E_LOC
+LOGICAL, SAVE :: PRINTED_RAMP_TABLE = .FALSE.
+INTEGER :: ITDBG
+REAL(EB) :: A_LOC, E_LOC, TDBG_C, TDBG_K, A_DBG, E_DBG
 LOGICAL :: LIQUID(N_MATS),SPEC_ID_ALREADY_USED(N_MATS),DO_EVAPORATION
 
 B_NUMBER = 0._EB
@@ -3459,10 +3461,37 @@ MATERIAL_LOOP: DO N=1,N_MATS  ! Loop over all materials in the cell (alpha subsc
                   IF (ML%I_RAMP_E(J) > 0) E_LOC = 1000._EB*EVALUATE_RAMP(TMP_S,ML%I_RAMP_E(J))
             ENDIF
 
-            IF (J==1 .AND. N==1) THEN
-               WRITE(*,'(A,1X,F10.3,1X,A,1X,ES12.5,1X,A,1X,ES12.5)') &
-               'RAMP DEBUG TMP_S=', TMP_S, 'A_LOC=', A_LOC, 'E_LOC=', E_LOC
-            ENDIF
+IF (.NOT.PRINTED_RAMP_TABLE) THEN
+   PRINTED_RAMP_TABLE = .TRUE.
+
+   WRITE(*,*)
+   WRITE(*,*) '=============================================='
+   WRITE(*,*) 'RAMP DEBUG TABLE FOR MATERIAL: ', TRIM(ML%ID)
+   WRITE(*,*) 'Temperature is shown in Celsius'
+   WRITE(*,*) '      T(C)            A(T)               E(T) [J/mol]'
+   WRITE(*,*) '----------------------------------------------'
+
+   DO ITDBG = 0, 800, 10
+      TDBG_C = REAL(ITDBG,EB)
+      TDBG_K = TDBG_C + TMPM
+
+      A_DBG = ML%A(J)
+      IF (ALLOCATED(ML%I_RAMP_A)) THEN
+         IF (ML%I_RAMP_A(J) > 0) A_DBG = EVALUATE_RAMP(TDBG_K,ML%I_RAMP_A(J))
+      ENDIF
+
+      E_DBG = ML%E(J)/1000._EB
+      IF (ALLOCATED(ML%I_RAMP_E)) THEN
+         IF (ML%I_RAMP_E(J) > 0) E_DBG = EVALUATE_RAMP(TDBG_K,ML%I_RAMP_E(J))
+      ENDIF
+
+      WRITE(*,'(F10.3,3X,ES14.6,3X,ES14.6)') TDBG_C, A_DBG, E_DBG
+   ENDDO
+
+   WRITE(*,*) '=============================================='
+   WRITE(*,*)
+ENDIF
+
             
             REACTION_RATE = A_LOC*(RHO_S(N))**ML%N_S(J)*EXP(-E_LOC/(R0*TMP_S))
 
@@ -3495,10 +3524,6 @@ MATERIAL_LOOP: DO N=1,N_MATS  ! Loop over all materials in the cell (alpha subsc
                   IF (ML%I_RAMP_E(J) > 0) E_LOC = 1000._EB*EVALUATE_RAMP(TMP_S,ML%I_RAMP_E(J))
             ENDIF
 
-            IF (J==1 .AND. N==1) THEN
-               WRITE(*,'(A,1X,F10.3,1X,A,1X,ES12.5,1X,A,1X,ES12.5)') &
-               'RAMP DEBUG TMP_S=', TMP_S, 'A_LOC=', A_LOC, 'E_LOC=', E_LOC
-            ENDIF
             
             REACTION_RATE = A_LOC*EXP(-E_LOC/(R0*TMP_S))
 
