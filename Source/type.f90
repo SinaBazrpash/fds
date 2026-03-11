@@ -796,8 +796,10 @@ TYPE MATERIAL_TYPE
    INTEGER :: I_RAMP_C_S=-1                             !< Index of specific heat RAMP
    CHARACTER(LABEL_LENGTH), ALLOCATABLE, DIMENSION(:) :: RAMP_A !< Sina Names of RAMPs for pre-exponential constant A
    CHARACTER(LABEL_LENGTH), ALLOCATABLE, DIMENSION(:) :: RAMP_E !< Sina Names of RAMPs for activation energy E
+   CHARACTER(LABEL_LENGTH), ALLOCATABLE, DIMENSION(:) :: RAMP_F_ALPHA
    INTEGER, ALLOCATABLE, DIMENSION(:) :: I_RAMP_A      !< Sina Indices of A RAMPs
    INTEGER, ALLOCATABLE, DIMENSION(:) :: I_RAMP_E      !< Sina Indices of E RAMPs
+   INTEGER, ALLOCATABLE, DIMENSION(:) :: I_RAMP_F_ALPHA
    INTEGER, ALLOCATABLE, DIMENSION(:) :: N_RESIDUE      !< Number of residue materials
    INTEGER, ALLOCATABLE, DIMENSION(:) :: N_LPC         !< Number of particle classes
    INTEGER, ALLOCATABLE, DIMENSION(:) :: CHILD_MATL     !< Array giving all materials incorporated by successive reactions
