@@ -3460,46 +3460,13 @@ MATERIAL_LOOP: DO N=1,N_MATS  ! Loop over all materials in the cell (alpha subsc
 
             E_LOC = ML%E(J)
                IF (ALLOCATED(ML%I_RAMP_E)) THEN
-                  IF (ML%I_RAMP_E(J) > 0) E_LOC = EB*EVALUATE_RAMP(TMP_S,ML%I_RAMP_E(J))
+                  IF (ML%I_RAMP_E(J) > 0) E_LOC = 1000._EB*EVALUATE_RAMP(TMP_S,ML%I_RAMP_E(J))
             ENDIF
 
-IF (.NOT.PRINTED_RAMP_TABLE) THEN
-   PRINTED_RAMP_TABLE = .TRUE.
 
-   WRITE(*,*)
-   WRITE(*,*) '=============================================='
-   WRITE(*,*) 'RAMP DEBUG TABLE FOR MATERIAL: ', TRIM(ML%ID)
-   WRITE(*,*) 'Temperature is shown in Celsius'
-   WRITE(*,*) '      T(C)            A(T)               E(T) [J/mol]'
-   WRITE(*,*) '----------------------------------------------'
-
-   DO ITDBG = 0, 800, 10
-      TDBG_C = REAL(ITDBG,EB)
-      TDBG_K = TDBG_C + TMPM
-
-      A_DBG = ML%A(J)
-      IF (ALLOCATED(ML%I_RAMP_A)) THEN
-         IF (ML%I_RAMP_A(J) > 0) A_DBG = EVALUATE_RAMP(TDBG_K,ML%I_RAMP_A(J))
-      ENDIF
-
-      E_DBG = ML%E(J)/EB
-      IF (ALLOCATED(ML%I_RAMP_E)) THEN
-         IF (ML%I_RAMP_E(J) > 0) E_DBG = EVALUATE_RAMP(TDBG_K,ML%I_RAMP_E(J))
-      ENDIF
-
-      WRITE(*,'(F10.3,3X,ES14.6,3X,ES14.6)') TDBG_C, A_DBG, E_DBG
-   ENDDO
-
-   WRITE(*,*) '=============================================='
-   WRITE(*,*)
-ENDIF
 
 K_LOC = A_LOC*EXP(-E_LOC/(R0*TMP_S))
 
-IF (J==1 .AND. N==1) THEN
-   WRITE(*,'(A,1X,F10.3,1X,A,1X,ES12.5,1X,A,1X,ES12.5,1X,A,1X,ES12.5)') &
-      'DEBUG T(C)=', TMP_S-TMPM, 'A=', A_LOC, 'E=', E_LOC, 'k=', K_LOC
-ENDIF
 
 RHO0_LOC = MAX(ML%RHO_S, TWO_EPSILON_EB)
 ALPHA_LOC = 1._EB - RHO_S(N)/RHO0_LOC
@@ -3520,6 +3487,23 @@ ENDIF
          ELSE
       REACTION_RATE = A_LOC*(RHO_S(N))**ML%N_S(J)*EXP(-E_LOC/(R0*TMP_S))
    ENDIF
+
+IF (J==1 .AND. N==1) THEN
+
+   IF (.NOT.PRINTED_RUNTIME_HEADER) THEN
+      PRINTED_RUNTIME_HEADER = .TRUE.
+      WRITE(*,*)
+      WRITE(*,*) '=========================================================================================================='
+      WRITE(*,*) 'RUNTIME DEBUG: values exactly as used in equation'
+      WRITE(*,*) ' T_USED(K)    T_USED(C)           A_USED               E_USED            R_USED              K_USED        REACTION_RATE'
+      WRITE(*,*) '                                            [same A units]        [J/kmol]          [J/kmol/K]            [1/s or eff.]'
+      WRITE(*,*) '----------------------------------------------------------------------------------------------------------'
+   ENDIF
+
+   WRITE(*,'(F10.3,3X,F10.3,3X,ES16.8,3X,ES16.8,3X,ES16.8,3X,ES16.8,3X,ES16.8)') &
+      TMP_S, TMP_S-TMPM, A_LOC, E_LOC, R0, K_LOC, REACTION_RATE
+
+ENDIF
 
             ! power term
 
