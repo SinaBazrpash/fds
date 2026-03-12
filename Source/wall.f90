@@ -3206,9 +3206,8 @@ REAL(EB) :: REACTION_RATE,Y_O2,X_O2,MW(N_MATS),Y_GAS(N_MATS),Y_TMP(N_MATS),Y_SV(
             RHO_DOT,RHO_DOT_REAC(MAX_REACTIONS),RHO_DOT_REAC_SUM,H_MASS_DNS
 LOGICAL, SAVE :: PRINTED_RAMP_TABLE = .FALSE.
 LOGICAL, SAVE :: PRINTED_RUNTIME_HEADER = .FALSE.
-
 INTEGER :: ITDBG
-REAL(EB) :: K_LOC
+REAL(EB) :: K_LOC,T_PRINT_C
 REAL(EB) :: A_LOC, E_LOC, TDBG_C, TDBG_K, A_DBG, E_DBG
 REAL(EB) :: ALPHA_LOC, F_ALPHA_LOC, RHO0_LOC
 LOGICAL :: LIQUID(N_MATS),SPEC_ID_ALREADY_USED(N_MATS),DO_EVAPORATION
@@ -3468,7 +3467,7 @@ MATERIAL_LOOP: DO N=1,N_MATS  ! Loop over all materials in the cell (alpha subsc
 
 
 
-K_LOC = A_LOC*EXP(-E_LOC/(R0*TMP_S))
+
 
 
 RHO0_LOC = MAX(ML%RHO_S, TWO_EPSILON_EB)
@@ -3492,19 +3491,25 @@ ENDIF
    ENDIF
 
 
+K_LOC = A_LOC*EXP(-E_LOC/(R0*TMP_S))
+T_PRINT_C = TMP_S - TMPM
+
+IF (J==1 .AND. N==1) THEN
+
    IF (.NOT.PRINTED_RUNTIME_HEADER) THEN
       PRINTED_RUNTIME_HEADER = .TRUE.
       WRITE(*,*)
-      WRITE(*,*) '=========================================================================================================='
       WRITE(*,*) 'RUNTIME DEBUG: values exactly as used in equation'
+      WRITE(*,*) '----------------------------------------------------------------------------------------------------------------'
       WRITE(*,*) ' T_USED(K)    T_USED(C)           A_USED               E_USED            R_USED              K_USED        REACTION_RATE'
-      WRITE(*,*) '                                            [same A units]        [J/kmol]          [J/kmol/K]            [1/s or eff.]'
-      WRITE(*,*) '----------------------------------------------------------------------------------------------------------'
+      WRITE(*,*) '                                            [same A units]        [J/kmol]          [J/kmol/K]            [used]'
+      WRITE(*,*) '----------------------------------------------------------------------------------------------------------------'
    ENDIF
 
    WRITE(*,'(F10.3,3X,F10.3,3X,ES16.8,3X,ES16.8,3X,ES16.8,3X,ES16.8,3X,ES16.8)') &
-      TMP_S, TMP_S-TMPM, A_LOC, E_LOC, R0, K_LOC, REACTION_RATE
+      TMP_S, T_PRINT_C, A_LOC, E_LOC, R0, K_LOC, REACTION_RATE
 
+ENDIF
 
             ! power term
 
