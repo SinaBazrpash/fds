@@ -3460,7 +3460,7 @@ MATERIAL_LOOP: DO N=1,N_MATS  ! Loop over all materials in the cell (alpha subsc
 
             E_LOC = ML%E(J)
                IF (ALLOCATED(ML%I_RAMP_E)) THEN
-                  IF (ML%I_RAMP_E(J) > 0) E_LOC = 1000._EB*EVALUATE_RAMP(TMP_S,ML%I_RAMP_E(J))
+                  IF (ML%I_RAMP_E(J) > 0) E_LOC = EB*EVALUATE_RAMP(TMP_S,ML%I_RAMP_E(J))
             ENDIF
 
 IF (.NOT.PRINTED_RAMP_TABLE) THEN
@@ -3482,7 +3482,7 @@ IF (.NOT.PRINTED_RAMP_TABLE) THEN
          IF (ML%I_RAMP_A(J) > 0) A_DBG = EVALUATE_RAMP(TDBG_K,ML%I_RAMP_A(J))
       ENDIF
 
-      E_DBG = ML%E(J)/1000._EB
+      E_DBG = ML%E(J)/EB
       IF (ALLOCATED(ML%I_RAMP_E)) THEN
          IF (ML%I_RAMP_E(J) > 0) E_DBG = EVALUATE_RAMP(TDBG_K,ML%I_RAMP_E(J))
       ENDIF
