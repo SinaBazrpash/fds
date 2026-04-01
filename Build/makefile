@@ -71,12 +71,7 @@ MKL_DIR_BASE  := $(MKL_DIR_UNIX)/lib
 MKL_BLA_LIB   := mkl_blacs_intelmpi_lp64
 MKL_BLA_PATH_A := "$(MKL_DIR_INTEL)/lib$(MKL_BLA_LIB).a"
 MKL_BLA_PATH_LIB := "$(MKL_DIR_INTEL)/$(MKL_BLA_LIB).lib"
-ifneq (,$(wildcard $(MKL_BLA_PATH_A) $(MKL_BLA_PATH_LIB)))
-    MKLLIBDIR := $(MKL_DIR_INTEL)
-else
-    MKLLIBDIR := $(MKL_DIR_BASE)
-endif
-$(info MKLLIBDIR = $(MKLLIBDIR))
+MKLLIBDIR := /appl/spack/v018/install-tree/intel-2021.6.0/intel-oneapi-mkl-2022.1.0-tr5vm2/mkl/2022.1.0/lib/intel64$(info MKLLIBDIR = $(MKLLIBDIR))
 
 ifeq ($(shell echo "check_quotes"),"check_quotes")
   # windows
