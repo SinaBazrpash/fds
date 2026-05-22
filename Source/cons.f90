@@ -346,6 +346,7 @@ REAL(EB) :: NOISE_VELOCITY=0.005_EB            !< Velocity of random noise vecto
 REAL(EB) :: TAU_DEFAULT=1._EB                  !< Default ramp-up time (s)
 REAL(EB) :: TAU_CHEM=1.E-5_EB                  !< Smallest reaction mixing time scale (s)
 REAL(EB) :: TAU_FLAME=1.E10_EB                 !< Largest reaction mixing time scale (s)
+REAL(EB) :: TURBULENT_FLAME_SPEED=100._EB      !< Flame speed used to set minimum reaction mixing time (m/s)
 REAL(EB) :: SMOKE_ALBEDO=0.3_EB                !< Parmeter used by Smokeview
 REAL(EB) :: Y_WERNER_WENGLE=11.81_EB           !< Limit of y+ in Werner-Wengle model
 REAL(EB) :: PARTICLE_CFL_MAX=1.0_EB            !< Upper limit of CFL constraint based on particle velocity
@@ -447,6 +448,7 @@ INTEGER :: ZETA_0_RAMP_INDEX=0                                      !< Ramp inde
 LOGICAL :: OUTPUT_CHEM_IT=.FALSE.
 LOGICAL :: REAC_SOURCE_CHECK=.FALSE.
 LOGICAL :: COMPUTE_ADIABATIC_FLAME_TEMPERATURE=.FALSE.              !< Report adiabatic flame temperature per REAC in LU_OUTPUT
+LOGICAL :: VARIABLE_CFT=.FALSE.                                     !< Experimental critical flame temp concept
 
 REAL(EB) :: RSUM0                                     !< Initial specific gas constant, \f$ R \sum_i Z_{i,0}/W_i \f$
 
@@ -610,8 +612,7 @@ REAL(EB), ALLOCATABLE, DIMENSION(:) :: DSUM,USUM,PSUM
 INTEGER :: LEVEL_SET_MODE=0               !< Indicator of the type of level set calculation to be done
 LOGICAL :: LEVEL_SET_COUPLED_FIRE=.TRUE.  !< Indicator for fire and wind level set coupling
 LOGICAL :: LEVEL_SET_COUPLED_WIND=.TRUE.  !< Indicator for fire and wind level set coupling
-LOGICAL :: LEVEL_SET_ELLIPSE=.TRUE.       !< Indicator of Richards elliptical level set formulation
-LOGICAL :: LSET_TAN2
+LOGICAL :: LEVEL_SET_ELLIPSE=.TRUE.       !< Placeholder for future level set spread formulations
 
 ! Parameters for Terrain and Wind simulation needs
 
@@ -620,7 +621,6 @@ INTEGER :: N_VENT_TOTAL=0
 
 ! Sprinkler Variables
 
-REAL(EB) :: C_DIMARZO=6.E6_EB
 INTEGER :: N_ACTUATED_SPRINKLERS=0
 INTEGER, PARAMETER :: NDC=1000,NDC2=100
 INTEGER, PARAMETER :: RM_NO_B        = -1 !< Ranz-Marshall no B number
@@ -739,11 +739,11 @@ INTEGER, ALLOCATABLE, DIMENSION(:,:) :: N_EDGES_DIM_CC
 
 ! HVAC Parameters
 
-INTEGER :: N_DUCTNODES = 0, N_DUCTS = 0, N_FANS = 0, N_FILTERS = 0, N_AIRCOILS = 0,N_NETWORKS=0, N_DUCTRUNS=0,&
+INTEGER :: N_DUCTNODES = 0, N_DUCTS = 0, N_FANS = 0, N_FILTERS = 0, N_AIRCOILS = 0, N_DUCTRUNS=0,&
            N_CONNECTIVITY_INDICES, N_NODE_VARS, N_DUCT_VARS
 
 
-INTEGER , ALLOCATABLE, DIMENSION(:) :: DUCT_NE,DUCTNODE_NE,DUCT_DR,DUCTNODE_DR
+INTEGER , ALLOCATABLE, DIMENSION(:) ::DUCT_DR,DUCTNODE_DR
 REAL(EB) :: HVAC_PRES_RELAX=1.0_EB,NODE_Z_MIN,NODE_Z_MAX
 LOGICAL :: HVAC_SOLVE=.FALSE.,HVAC_LOCAL_PRESSURE=.TRUE.
 
@@ -876,17 +876,9 @@ INTEGER :: NRT                    !< Number of radiation theta angles
 INTEGER :: NCO
 INTEGER :: UIIDIM
 INTEGER :: NLAMBDAT               !< Number of wavelength subdivisions
-INTEGER :: N_RADCAL_ARRAY_SIZE
-INTEGER :: RADCAL_SPECIES_INDEX(16)
-INTEGER :: N_KAPPA_T=44           !< Number of temperature points in absorption coefficient look-up table
-INTEGER :: N_KAPPA_Y=50           !< Number of species points in absorption coefficient look-up table
 
 LOGICAL :: WIDE_BAND_MODEL        !< Non-gray gas, wide band model
 LOGICAL :: WSGG_MODEL             !< Weighted Sum of Gray Gas model
-
-REAL(EB), ALLOCATABLE, DIMENSION(:,:) :: Z2RADCAL_SPECIES
-REAL(EB), ALLOCATABLE, DIMENSION(:,:,:,:) :: RADCAL_SPECIES2KAPPA
-CHARACTER(LABEL_LENGTH) :: RADCAL_SPECIES_ID(16)='NULL'
 
 END MODULE RADCONS
 
