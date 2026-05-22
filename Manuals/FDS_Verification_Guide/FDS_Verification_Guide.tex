@@ -1426,7 +1426,7 @@ Hydrogen gas (2~g/mol) is injected into a small compartment filled with sulfur h
 \subsection{Temperature Lower Bound in a Fire Simulation}
 \label{tmp_lower_limit}
 
-A 2-D methane-air diffusion flame calculation is run three different ways to check that the temperature does not fall below the ambient (20~\unit{\degreeCelsius}). The results are shown in Fig.~\ref{tmp_lower_limit_fig}. The left plot shows the global minimum temperature for the case where the reaction stoichiometry is specified explicitly. Theright plot is for the case where the simple chemistry model is used.
+A 2-D methane-air diffusion flame calculation is run three different ways to check that the temperature does not fall below the ambient (20~\unit{\degreeCelsius}). The results are shown in Fig.~\ref{tmp_lower_limit_fig}. The left plot shows the global minimum temperature for the case where the reaction stoichiometry is specified explicitly. The right plot is for the case where the simple chemistry model is used.
 
 \begin{figure}[!ht]
    \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
@@ -1608,7 +1608,7 @@ where $\zeta_1=27.4$ and the density of air is $\rho=1.195$~kg/m$^3$. Figure~\re
 \begin{figure}[!ht]
 \centering
 \includegraphics[height=2.2in]{SCRIPT_FIGURES/thick_orifice}
-\caption[Results of the \ct{thick_orifice} case]{Pressure rise behind an square, thick orifice in a duct.}
+\caption[Results of the \ct{thick_orifice} case]{Pressure rise behind a square, thick orifice in a duct.}
 \label{fig:thick_orifice}
 \end{figure}
 
@@ -1968,7 +1968,7 @@ In FDS, $\tau_w$ is obtained only from the wall model. The resolution of the wal
 
 \section{Heated Channel Flow}
 
-The simulation of turbulent channel flow (Re$_{\tau}=180$) with a heat source was performed to verify the log law near-wall model for heat transfer \cite{FDS_Tech_Guide}. The height of the channel is $H=2$ m, the width is $W=6$ m, and the length is $L=12$ m. There are 96 cells in the stream-wise direction ($\delta x = 0.125$ m) and 48 cells in the spanwise and wall-normal directions ($\delta y=\delta z=0.125$ m).  The midpoint of the first cell in viscous units is $z^+ \approx 18$, putting the first velocity unknown within the buffer layer. For this reason, the dynamic Smagorinsky SGS model is used for the residual stress. Additionally, these cases were run with (\ct{SIMULATION_MODE='LES'} on \ct{MISC}), which accounts for both molecular the turbulent transport coefficients, a must for distinguishing between fluids with different molecular Prandtl or Schmidt numbers (here the Reynolds number is so low that molecular effects may dominate locally).  The flow is maintained by a mean pressure gradient ($9.0 \times 10^{-6}$ Pa/m) in the stream-wise direction (follows from Re$_{\tau}=180$). A constant volumetric heat source (0.5 W/m$^3$) is imposed on the fluid. The boundary conditions for momentum equations are no-slip at top and bottom walls and periodic for the stream-wise and spanwise directions. The boundary condition for the energy equation is constant temperature ($T_w = 20 \,\mbox{\unit{\degreeCelsius}} $) at the wall. To evaluate the effects of Prandtl number (Pr) and compare the DNS study \cite{Kim:1987} with FDS, the specific heat ($c_p = 1$ \unit{kJ/(kg.K)}) and viscosity ($\mu = 1.8216 \times 10^{-5}$ \unit{kg/(m.s)}) are fixed and the conductivity, $k$, of the fluid (air) is adjusted to:
+The simulation of turbulent channel flow (Re$_{\tau}=180$) with a heat source was performed to verify the log law near-wall model for heat transfer \cite{FDS_Tech_Guide}. The height of the channel is $H=2$ m, the width is $W=6$ m, and the length is $L=12$ m. There are 96 cells in the stream-wise direction ($\delta x = 0.125$ m) and 48 cells in the spanwise and wall-normal directions ($\delta y=\delta z=0.125$ m).  The midpoint of the first cell in viscous units is $z^+ \approx 18$, putting the first velocity unknown within the buffer layer. For this reason, the dynamic Smagorinsky SGS model is used for the residual stress. Additionally, these cases were run with (\ct{SIMULATION_MODE='LES'} on \ct{MISC}), which accounts for both molecular and turbulent transport coefficients, a must for distinguishing between fluids with different molecular Prandtl or Schmidt numbers (here the Reynolds number is so low that molecular effects may dominate locally).  The flow is maintained by a mean pressure gradient ($9.0 \times 10^{-6}$ Pa/m) in the stream-wise direction (follows from Re$_{\tau}=180$). A constant volumetric heat source (0.5 W/m$^3$) is imposed on the fluid. The boundary conditions for momentum equations are no-slip at top and bottom walls and periodic for the stream-wise and spanwise directions. The boundary condition for the energy equation is constant temperature ($T_w = 20 \,\mbox{\unit{\degreeCelsius}} $) at the wall. To evaluate the effects of Prandtl number (Pr) and compare the DNS study \cite{Kim:1987} with FDS, the specific heat ($c_p = 1$ \unit{kJ/(kg.K)}) and viscosity ($\mu = 1.8216 \times 10^{-5}$ \unit{kg/(m.s)}) are fixed and the conductivity, $k$, of the fluid (air) is adjusted to:
 \begin{center}
 \begin{tabular}{ll}
 Pr & $k$ (\unit{W/(m.K)}) \\
@@ -2289,7 +2289,7 @@ Atmospheric turbulence is affected by the stability of the boundary layer.  A st
 
 In a simple turbulent channel flow, the resulting boundary layer profile results from the balance between the stream-wise pressure gradient and the turbulent stresses.  In an Ekman layer, the Coriolis force is also part of the balance.  With Ekman layers the Coriolis force has the effect of twisting the atmospheric boundary layer---near the surface there is a component of the wind aligned with the pressure gradient, but aloft the winds tend to be geostrophic, meaning they run parallel to isobars (perpendicular to the pressure gradient).  In FDS, input of a geostrophic wind implies a mean pressure gradient in the orthogonal direction (see FDS User Guide \cite{FDS_Users_Guide}).
 
-In atmospheric flows, it is difficult to separate the forces for verification purposes.  In this section, we will undertake an admittedly weak form of verification, namely, code-to-code comparison.  We compare FDS with the results from Schoenberg \cite{Schoenberg:2004} where OpenFOAM is modified for atmospheric flows.  We use the same domain, grid resolution, and---as closely as possible---initial conditions as Schoenberg.  The latitude is specified as 45$^\circ$ north (for specifying the Coriolis force).  We use the Deardorff turbulence model with constant turbulent Prandtl number, which differs from Schoenberg, who uses a dynamic turbulent Prantdl number.  The main difference in the models is that Schoenberg solves a transport equation for $k_{sgs}$ whereas FDS uses a simple algebraic closure (see FDS Tech Guide \cite{FDS_Math_Guide}).  Further, it was difficult to discern the exact initialization procedure from the Schoenberg report, so there are likely some minor differences that can account for the small discrepancies we see in the FDS results.  It should also be noted that the Schoenberg simulations apply a Boussinesq assumption and thus do not account for the pressure stratification term in the energy equation.  Hence, to match the Schoenberg results as closely as possible, we have set \ct{STRATIFICATION=F} for FDS, which is counterintuitive for an atmospheric flow.  In practice, this should not be done.
+In atmospheric flows, it is difficult to separate the forces for verification purposes.  In this section, we will undertake an admittedly weak form of verification, namely, code-to-code comparison.  We compare FDS with the results from Schoenberg \cite{Schoenberg:2004} where OpenFOAM is modified for atmospheric flows.  We use the same domain, grid resolution, and---as closely as possible---initial conditions as Schoenberg.  The latitude is specified as 45\textdegree{} north (for specifying the Coriolis force).  We use the Deardorff turbulence model with constant turbulent Prandtl number, which differs from Schoenberg, who uses a dynamic turbulent Prantdl number.  The main difference in the models is that Schoenberg solves a transport equation for $k_{sgs}$ whereas FDS uses a simple algebraic closure (see FDS Tech Guide \cite{FDS_Math_Guide}).  Further, it was difficult to discern the exact initialization procedure from the Schoenberg report, so there are likely some minor differences that can account for the small discrepancies we see in the FDS results.  It should also be noted that the Schoenberg simulations apply a Boussinesq assumption and thus do not account for the pressure stratification term in the energy equation.  Hence, to match the Schoenberg results as closely as possible, we have set \ct{STRATIFICATION=F} for FDS, which is counterintuitive for an atmospheric flow.  In practice, this should not be done.
 
 Three cases are run: neutral, stable, and unstable boundary layers.  The domain size, grid resolution, surface flux condition, and geostrophic wind driving force are presented in Table \ref{tab:ekman_param} (adapted from \cite{Schoenberg:2004}). Note that the density and specific heat are specified in the FDS input file such that the surface heat flux in either \unit{K.m/s} or \unit{W/m^2} are roughly the same.  The boundary conditions are periodic in $x$ and $y$ and no flux at the top of the domain.  Note that this makes achieving a steady state impossible for the stable and unstable cases.  This is another reason why the code comparison is difficult---essentially we are comparing the resulting profiles after approximately 40 hours of real time evolution.  Schoenberg uses a spin up process of running the neutral case for up to 30 hours before transitioning to stratification.  The surface aerodynamic roughness used by Schoenberg is $z_0 = 0.1$ m for the unstable and neutral cases and $z_0 = 0.13$ m for the stable case.  This translates to a sand grain roughness of 3.0 m and 3.9 m, respectively, in FDS.  Note that the input files for the \ct{ekman_*} series are stored with the validation suite (see \ct{fds/Validation/Schoenberg_Ekman_Layers/}), since the cases use 16 processors and take a few hours to complete.
 
@@ -2500,7 +2500,7 @@ A 1 m$^3$ box contains AIR at ambient conditions and has a sphere of radius 0.5 
 
 \section{Energy Conservation}
 
-FDS does not explicitly solve the energy conservation equation. Instead, mass transport equations are solved for the the $n$ independent gas species.  The density is found from summing the individual gas species densities, $\rho = \sum_\alpha \rho_\alpha$. Source terms from the energy equation are incorporated in the velocity  divergence, $\nabla \cdot \bu$, which is factored out of the sensible enthalpy transport equation, i.e.,
+FDS does not explicitly solve the energy conservation equation. Instead, mass transport equations are solved for the $n$ independent gas species.  The density is found from summing the individual gas species densities, $\rho = \sum_\alpha \rho_\alpha$. Source terms from the energy equation are incorporated in the velocity  divergence, $\nabla \cdot \bu$, which is factored out of the sensible enthalpy transport equation, i.e.,
 \be
 \label{eqn_new_div}
 \nabla\cdot\mathbf{u} = \frac{1}{\rho h_{\rm s}} \left[ \frac{\mbox{D}}{\mbox{D} t}(\bar{p}-\rho h_{\rm s}) + \dot{q}^{\prime\prime\prime} + \nabla\cdot(k \nabla T) - \nabla\cdot\sum_\alpha h_{s,\alpha} \mathbf{J}_\alpha - \nabla\cdot\dot{\mathbf{q}}_r^{\prime\prime} + \dot{q}_b^{\prime\prime\prime} \right] \,\mbox{.}
@@ -4448,7 +4448,7 @@ This verification test consists of two test cases. The second case, \ct{aerosol_
 
 Using the equation for the thermophoretic velocity, $u_{\rm th}$, the thermophoretic velocities for the gas cells adjacent to the hot and cold walls are respectively $2.25 \times 10^{-4}$~m/s and $2.15 \times 10^{-4}$~m/s. Adjacent to the cold wall, $u_{\rm th}$ is the rate at which the aerosol deposits onto the wall. Over the simulation time of 2~s, the soot will move $4.29 \times 10^{-4}$~m which is 42.9~\% of the cell size. That fraction of the aerosol in the cell will deposit which is $5.05 \times 10^{-9}$~\unit{kg/m^2}. Adjacent to the hot wall, $u_{\rm th}$ is the rate at which the aerosol leaves the cell. Over the simulation time of 2~s, the soot will move $4.49 \times 10^{-4}$~m which is 44.9~\% of the cell size. One minus that fraction of the original aerosol density in the cell will remain which is $4.98 \times 10^{-6}$~\unit{kg/m^3}.
 
-The thermophorertic velocity is given by
+The thermophoretic velocity is given by
 \be
 u_{\rm th} = \frac{K_{\rm th} \nu}{T_{\rm g}} \; \frac{\d T}{\d x}
 \ee
@@ -4518,7 +4518,7 @@ The first case to be discussed consists of a box 10~cm on side with adiabatic, f
     \label{fig:agglomeration}
 \end{figure}
 
-In the second case three pairs of small (3~mm by 3~mm) vents are placed on opposite corners of the the walls, floor, and ceiling of the box. Each pair is connected by an HVAC duct that blows air at 1~m/s at the face of the vents. The average dissipation rate in the box is 0.0204~m$^2$/s$^3$. Using the average dissipation rate, the agglomeration rate is computed and the resulting mass fractions are compared against the volume averaged mass fractions computed by FDS.
+In the second case three pairs of small (3~mm by 3~mm) vents are placed on opposite corners of the walls, floor, and ceiling of the box. Each pair is connected by an HVAC duct that blows air at 1~m/s at the face of the vents. The average dissipation rate in the box is 0.0204~m$^2$/s$^3$. Using the average dissipation rate, the agglomeration rate is computed and the resulting mass fractions are compared against the volume averaged mass fractions computed by FDS.
 
 \begin{figure}[ht]
     \centering
@@ -4756,7 +4756,7 @@ To test the second-order accuracy of the solid phase conduction algorithm, this 
 \section{Simple Thermocouple Model}
 \label{thermocouples}
 
-This example tests the simple thermocouple model in FDS. It consists of a box whose walls and gas temperatures are fixed at 500~\unit{\degreeCelsius}. Inside the box are three thermocouples with bead diameters of 1~mm, 2~mm, and 3~mm. Also included in the box are three ``targets'' -- small solid objects whose surfaces are assumed to be composed of small spheres of the same diameter as the thermocouples. Figure~\ref{thermocouples_fig} compares the temperature rise of the objects. The thermocouple model is not compared with an analytical solutions. This is simply a comparison of the thermally thin thermocouple calculation with the thermally thick ``target'' calculation. Small differences in temperature are due to slightly different flow conditions in different regions of the box and numerical error due to node spacing and time step size.
+This example tests the simple thermocouple model in FDS. It consists of a box whose walls and gas temperatures are fixed at 500~\unit{\degreeCelsius}. Inside the box are three thermocouples with bead diameters of 1~mm, 2~mm, and 3~mm. Also included in the box are three ``targets'' -- small solid objects whose surfaces are assumed to be composed of small spheres of the same diameter as the thermocouples. Figure~\ref{thermocouples_fig} compares the temperature rise of the objects. The thermocouple model is not compared with a analytical solutions. This is simply a comparison of the thermally thin thermocouple calculation with the thermally thick ``target'' calculation. Small differences in temperature are due to slightly different flow conditions in different regions of the box and numerical error due to node spacing and time step size.
 
 \begin{figure}[ht]
 \centering
@@ -4817,7 +4817,7 @@ In this example, a hollow cube whose walls are either zero, one, or two cells th
 \section{Heat Conduction through Immersed Boundaries}
 \label{back_wall_test_2}
 
-A 0.8~m by 0.8~m plate with surface temperature 1000~\unit{\degreeCelsius} and emissivity of 1 exposes a parallel plate separated by 0.15~m. The exposed plate is 1~cm thick, with a conductivity of 25~\unit{W/(m.K)}, density 1000~\unit{kg/m^3}, specific heat 0.1~\unit{kJ/(kg.K)}, emissivity 1, and a convective heat transfer coefficient of 0. Three different configurations are considered: (1) the plates are all defined as traditional FDS \ct{OBST}ructions, (2) the plates are defined as immersed boundary (\ct{GEOM}) obstructions, and (3) the same plates as in (2) are rotated 45$^\circ$. Figure~\ref{back_wall_test_2_fig} displays the front and back surface temperatures for all three cases, compared to the exact solution where the analytically determined heat flux, Eq.~(\ref{plate_view_factor_eq}), is imposed directly on the front plate surface. The error in all three cases is due mainly to the error in the radiation transport calculation on grids with 2.5~cm cells.
+A 0.8~m by 0.8~m plate with surface temperature 1000~\unit{\degreeCelsius} and emissivity of 1 exposes a parallel plate separated by 0.15~m. The exposed plate is 1~cm thick, with a conductivity of 25~\unit{W/(m.K)}, density 1000~\unit{kg/m^3}, specific heat 0.1~\unit{kJ/(kg.K)}, emissivity 1, and a convective heat transfer coefficient of 0~\unit{W/(m^2.K)}. Three different configurations are considered: (1) the plates are all defined as traditional FDS \ct{OBST}ructions, (2) the plates are defined as immersed boundary (\ct{GEOM}) obstructions, and (3) the same plates as in (2) are rotated 45\textdegree. Figure~\ref{back_wall_test_2_fig} displays the front and back surface temperatures for all three cases, compared to the exact solution where the analytically determined heat flux, Eq.~(\ref{plate_view_factor_eq}), is imposed directly on the front plate surface. The error in all three cases is due mainly to the error in the radiation transport calculation on grids with 2.5~cm cells.
 
 \begin{figure}[ht]
 \noindent
@@ -4826,7 +4826,7 @@ A 0.8~m by 0.8~m plate with surface temperature 1000~\unit{\degreeCelsius} and e
 \includegraphics[height=2.2in]{SCRIPT_FIGURES/back_wall_test_2_temp_geom} \\
 \multicolumn{2}{c}{\includegraphics[height=2.2in]{SCRIPT_FIGURES/back_wall_test_2_temp_geom_rotated}}
 \end{tabular*}
-\caption[The \ct{back_wall_test_2} test cases]{Front and back surface temperatures of a plate defined using the \ct{OBST} namelist parameters (top, left); \ct{GEOM} namelist parameters (top, right); \ct{GEOM} parameters rotated 45$^\circ$.}
+\caption[The \ct{back_wall_test_2} test cases]{Front and back surface temperatures of a plate defined using the \ct{OBST} namelist parameters (top, left); \ct{GEOM} namelist parameters (top, right); \ct{GEOM} parameters rotated 45\textdegree.}
 \label{back_wall_test_2_fig}
 \end{figure}
 
@@ -4925,6 +4925,25 @@ The right plot in Fig.~\ref{fig:ht3d_energy_conservation_8} displays the heat lo
 
 \FloatBarrier
 
+\subsection{Average Temperature of a 3-D Solid}
+\label{ht3d_average_temp}
+
+A solid cube with volume $V=0.216$~\unit{m^3}, specific heat $c_{\rm s}=1.5$~\unit{kJ/(kg.K)}, density $\rho_{\rm s}=500$~\unit{kg/m^3} is given an initial temperature of $T_0=800$~\unit{\degreeCelsius} and allowed to cool. With no radiation, the average interior temperature of the solid is expected to be
+\be
+   \overline{T}(t) = T_0 + \frac{1}{\rho_{\rm s} c_{\rm s} V} \int_0^t \int_A \dot{q}_{\rm c}'' \d A \d t
+\ee
+where the surface heat flux, $\dot{q}_{\rm c}''$, is negative.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[height=2.2in]{SCRIPT_FIGURES/ht3d_average_temp}
+\caption[\ct{ht3d_average_temp} test case]{Average interior temperature loss of a cooling cube that has been calculated from the surface heat flux or computed directly via an averaging of interior temperatures.}
+\label{fig:ht3d_average_temp}
+\end{figure}
+
+
+\FloatBarrier
+
 \subsection{Heat Transfer to an I-Beam}
 \label{ht3d_beam_heating}
 
@@ -4963,7 +4982,7 @@ Three abutting solids, one of which is thin, have a density of $\rho_{\rm s}=400
 \label{fig:ht3d_mass_conservation}
 \end{figure}
 
-In this case, the moisture is not explicitly modeled; that is, ``wet wood'' undergoes a single reaction becoming ``dry wood'' and water vapor. A variation of the case is to mix moisture and dry wood together and allow the moisture to evaporate. To mimic the conditions of the first case, the density of the dry wood is set to 387.76~kg/m$^3$ and the moisture 1000~kg/m$^3$. The same mass of water vapor should be produced, as shown in the right plot of Fig.~\ref{fig:ht3d_mass_conservation}, but the time histories of the two cases are not the same because the thermal properties of the combination of two material components in the second case are different than that of the single component of the first case.
+In this case, the moisture is not explicitly modeled; that is, ``wet wood'' undergoes a single reaction becoming ``dry wood'' and water vapor. A variation of the case is to mix moisture and dry wood together and allow the moisture to evaporate. To mimic the conditions of the first case, the density of the dry wood is set to 387.76~kg/m$^3$ and the moisture 1000~kg/m$^3$. The same mass of water vapor should be produced, as shown in the right plot of Fig.~\ref{fig:ht3d_mass_conservation}, but the time histories of the two cases are not the same because the thermal properties of the combination of two material components in the second case are different than that of the single component of the first case. Another difference between the first and second cases is that the evaporated vapor is forced out of the horizontal surfaces only, and the result is checked by comparing the time integrals of the surface and volume spatial integrals.
 
 \FloatBarrier
 
@@ -6980,7 +6999,7 @@ As the interior pressure rises in a typical building, the leakage area will grow
 \ee
 By default, $C_{\rm d}=1$, $n=0.5$ and $\Delta p_{\rm ref}=4$~Pa, meaning that the leak area will not change with pressure unless you specify an exponent other than 0.5.
 
-The first verification case involves three 1000~m$^3$ compartments that have 0.01~m$^2$ of leakage to the ambient. Each compartment is supplied with 0.16~m$^3$/s of inlet flow. The first compartment has the default values for the exponent and reference pressure, the second changes the exponent to 0.6, and the third third changes exponent and the reference pressure respectively to 0.6 and 10~Pa. The expected leakage velocities for these conditions are 160~m/s, 11.8~m/s, and 12.8~m/s. Note in the left plot of Fig.~\ref{leak_exponent_fig} that the velocities are negative because the FDS output for the leakage velocity is from the lower numbered pressure zone (in this case ambient) to the higher number (inside the compartment). Negative velocity indicates flow from inside to outside as expected.
+The first verification case involves three 1000~m$^3$ compartments that have 0.01~m$^2$ of leakage to the ambient. Each compartment is supplied with 0.16~m$^3$/s of inlet flow. The first compartment has the default values for the exponent and reference pressure, the second changes the exponent to 0.6, and the third changes exponent and the reference pressure respectively to 0.6 and 10~Pa. The expected leakage velocities for these conditions are 160~m/s, 11.8~m/s, and 12.8~m/s. Note in the left plot of Fig.~\ref{leak_exponent_fig} that the velocities are negative because the FDS output for the leakage velocity is from the lower numbered pressure zone (in this case ambient) to the higher number (inside the compartment). Negative velocity indicates flow from inside to outside as expected.
 
 The second case involves a steel e	nclosure with four localized leaks, two near the bottom and two near the top. The air flow into the compartment is ramped up slowly, and the right hand plot of Fig.~\ref{leak_exponent_fig} shows the ideal and predicted relationship between the volume flow and compartment pressure. In this case, $C_{\rm d}=0.61$, $n=0.6$, $\Delta p_{\rm ref}=1$~Pa, and $A_{\rm L,ref}=0.18$ at each of the four ``cracks.''
 
@@ -7219,7 +7238,7 @@ The shapes of the fire fronts are shown in Figure~\ref{fig:level_set_ellipse}. T
 \label{fig:level_set_ellipse_error}
 \end{figure}
 
-\subsection{Custom Wind Fuction}
+\subsection{Custom Wind Function}
 \label{LS_wind_ramp}
 
 The level set model determines a wind-aided head fire spread rate based on the function  
@@ -7510,7 +7529,7 @@ The spheres in Figure \ref{fig:geom_texture3} were created using \ct{SURF} and \
       N_LEVELS=3,SPHERE_RADIUS=0.25,SPHERE_ORIGIN=0.75,0.5,0.5,
       TEXTURE_ORIGIN=0.75,0.5,0.5,TEXTURE_MAPPING='SPHERICAL' /
 \end{lstlisting}
-The \ct{TEXTURE_MAP}\ keyword is used to specify the name of the image file applied to the geometric object. The \ct{SPHERICAL}\ setting indicates that that the texture map image is applied to the object using spherical coordinates.
+The \ct{TEXTURE_MAP}\ keyword is used to specify the name of the image file applied to the geometric object. The \ct{SPHERICAL}\ setting indicates that the texture map image is applied to the object using spherical coordinates.
 
 
 \begin{figure}[!ht]
@@ -7810,6 +7829,18 @@ as shown in Fig.~\ref{sphere_leak_fig}.
 \label{sphere_leak_fig}
 \end{figure}
 
+\subsection{Sprinklers}
+\label{obst_geom_sprk}
+
+This verification case consists of six meshes (6~m by 6~m by 3~m) with a 10~cm grid resolution. Each mesh has a 10~cm high square burner centered on the floor is 0.36~\unit{m^2} in area with an HRRPUA of 2000~\unit{kW/m^2} and a t$^2$ growth time of 120~s. A sprinkler with an RTI of 50~\unit{(m.s)\tothe{1/2}} is placed below the ceiling at a distance of 2.5~m from the center of the burner. Three of the meshes use \ct{OBST} for the burner, and the other three use \ct{GEOM}. The meshes use \ct{SHAPE} and \ct{MULT} (\ct{OBST}) or \ct{MOVE} (\ct{GEOM}) to rotate the burner 0, 20, or 45\unit{\degree}. The six cases should have nominally the same plume and ceiling jet dynamics meaning the sprinklers should have nominally the same temperature rise over time.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[height=2.2in]{../FDS_Verification_Guide/SCRIPT_FIGURES/obst_geom_sprk.pdf}
+	\caption[The \ct{obst_geom_sprk} test case]{Test of plume and ceiling jet dynamics for complex geometry.}
+	\label{fig:obst_geom_sprk}
+\end{figure}
+
 \section{Restart Function}
 \label{geom_restart}
 \label{geom_ls_restart}
@@ -7834,7 +7865,7 @@ In this test, a \ct{GEOM} cube is heated from below by a surface at a fixed temp
 
 FDS can output the root mean square (RMS), co-variance, and cross-correlation for both point and line \ct{DEVC} outputs.  To test these outputs a 1 m$^3$ box with open sides and a 10 cm grid size is defined with two inlet vents centered on adjacent faces.  This results in two orthogonal flow streams that collide at the center of the box and exit diagonally.  Within the diagonal portion of the flow, are placed point measurements for the FDS outputs of the u-velocity RMS, the u-velocity/w-velocity co-variance, and the u-velocity/w-velocity cross-correlation.
 
-Computation of the these quantities by their typical statistical definition would require having the entire time history for the velocities.  This is obviously not possible during runtime.  Instead FDS computes the values using logarithmic averaging and a user-defined averaging window.  One would expect, once steady-state conditions are reached, that the FDS predicted values should approach the analytic values.  Results are shown in Fig.~\ref{rms_cov_corr_plots}.  In each figure the red line represents the value computed using the entire time history after steady-state is reached.  As seen, the FDS predicted values approach the analytic values.
+Computation of these quantities by their typical statistical definition would require having the entire time history for the velocities.  This is obviously not possible during runtime.  Instead FDS computes the values using logarithmic averaging and a user-defined averaging window.  One would expect, once steady-state conditions are reached, that the FDS predicted values should approach the analytic values.  Results are shown in Fig.~\ref{rms_cov_corr_plots}.  In each figure the red line represents the value computed using the entire time history after steady-state is reached.  As seen, the FDS predicted values approach the analytic values.
 
 \begin{figure}[p]
 \centering
