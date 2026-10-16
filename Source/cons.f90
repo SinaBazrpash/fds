@@ -757,6 +757,8 @@ REAL(EB), POINTER, DIMENSION(:) :: COS_HALF_VIEW_ANGLE     !< View angle of the 
 REAL(EB), ALLOCATABLE, DIMENSION(:) :: VIEW_ANGLE_FACTOR        !< View angle area ORIENTATION_VECTOR
 INTEGER :: N_ORIENTATION_VECTOR                               !< Number of ORIENTATION_VECTORs
 
+! Explicit TGA entry point / uniform sample-temperature control. No kinetic parameter depends on beta.
+LOGICAL :: TGA_ANALYSIS_REQUESTED=.FALSE.,EAE_TGA_PRESCRIBED=.FALSE.,EAE_TGA_LINEAR=.TRUE.
 INTEGER :: TGA_MESH_INDEX=HUGE(INTEGER_ONE) !< Mesh for the special TGA calculation
 INTEGER :: TGA_SURF_INDEX=-100              !< Surface properties to use for special TGA calculation
 INTEGER :: TGA_WALL_INDEX=-100              !< Wall index to use for special TGA calculation

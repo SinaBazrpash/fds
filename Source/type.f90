@@ -8,6 +8,7 @@
 MODULE TYPES
 
 USE PRECISION_PARAMETERS
+USE EAE_DAEM, ONLY: EAE_CONFIG,EAE_STATE
 USE GLOBAL_CONSTANTS, ONLY : IAXIS,JAXIS,KAXIS,MAX_DIM,LOW_IND,HIGH_IND
 
 #ifdef WITH_MKL
@@ -174,6 +175,7 @@ TYPE (LAGRANGIAN_PARTICLE_CLASS_TYPE), DIMENSION(:), ALLOCATABLE, TARGET :: LAGR
 !> \brief Solid material density for 1-D pyrolysis/conduction algorithm
 
 TYPE MATL_COMP_TYPE
+   TYPE(EAE_STATE) :: EAE
    REAL(EB), ALLOCATABLE, DIMENSION(:) :: MASS_FRACTION  !< (1:N_LAYERS) Mass Fraction
    REAL(EB), ALLOCATABLE, DIMENSION(:) :: RHO            !< (1:NWP) Solid density (kg/m3)
 END TYPE MATL_COMP_TYPE
@@ -780,6 +782,7 @@ TYPE (REACTION_TYPE), DIMENSION(:), ALLOCATABLE, TARGET :: REACTION
 
 
 TYPE MATERIAL_TYPE
+   TYPE(EAE_CONFIG) :: EAE
    REAL(EB) :: RHO_S                                    !< Density (kg/m3) of the pure material
    REAL(EB) :: EMISSIVITY                               !< Emissivity of surface
    REAL(EB) :: THERMAL_DIFFUSIVITY                      !< Thermal diffusivity (m2/s)
