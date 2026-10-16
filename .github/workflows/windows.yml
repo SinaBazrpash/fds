@@ -69,9 +69,9 @@ jobs:
       run: |
         cd Build\impi_intel_win_db
         call make_fds.bat
-        fds_impi_intel_win_db.exe
+        fdseae_impi_intel_win_db.exe
     - name: build fds release
       run: |
         cd Build\impi_intel_win
         call make_fds.bat
-        fds_impi_intel_win.exe
+        fdseae_impi_intel_win.exe

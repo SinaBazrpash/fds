@@ -48,9 +48,9 @@ jobs:
       run: |
         cd ./Build/ompi_gnu_osx_db
         sh ./make_fds.sh
-        ./fds_ompi_gnu_osx_db
+        ./fdseae_ompi_gnu_osx_db
     - name: build fds release
       run: |
         cd ./Build/ompi_gnu_osx
         sh ./make_fds.sh
-        ./fds_ompi_gnu_osx
+        ./fdseae_ompi_gnu_osx
