@@ -1,10 +1,7 @@
 # Experimental FDS-EAE Global DAEM extension
 
 This source-only publication is based on upstream firemodels/fds master
-`b2bd16808fa3c76466b4a5eb83335575b611abf1`. Compilation and runtime compatibility
-of this Git revision have **NOT BEEN VERIFIED**. No builds or FDS simulations
-were performed for this synchronization. Previous isolated-build numerical
-results do not certify this source revision or these build-system changes.
+`b2bd16808fa3c76466b4a5eb83335575b611abf1`.
 
 ## Model and input
 
