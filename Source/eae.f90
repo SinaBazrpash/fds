@@ -68,8 +68,7 @@ IF (.NOT.ALL(IEEE_IS_FINITE(MU(:K))) .OR. .NOT.ALL(IEEE_IS_FINITE(SIGMA(:K))) .O
     .NOT.ALL(IEEE_IS_FINITE(PI(:K)))) THEN
    ERROR='EAE: nonfinite mixture'; RETURN
 ENDIF
-IF (ANY(SIGMA(:K)<=0) .OR. ANY(SIGMA(:K)>10000) .OR. ANY(MU(:K)<=0) .OR. &
-    ANY(MU(:K)>10000) .OR. ANY(PI(:K)<0) .OR. MAXVAL(PI(:K))<=0) THEN
+IF (ANY(SIGMA(:K)<=0) .OR. ANY(SIGMA(:K)>10000) .OR. ANY(MU(:K)<=0) .OR. ANY(MU(:K)>10000) .OR. ANY(PI(:K)<0) .OR. MAXVAL(PI(:K))<=0) THEN
    ERROR='EAE: sigma>0 and nonnegative pi with positive total required'; RETURN
 ENDIF
 C%A=A ; C%K=K ; C%NN=NODES ; C%EMIN=EMIN*1000 ; C%EMAX=EMAX*1000

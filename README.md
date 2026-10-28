@@ -1,3 +1,15 @@
+# FDS_EAE — verified local fixed-volume3D source
+
+Branch `EAE_3D_MAKE` publishes the installed fixed-volume EAE+native HT3D source.
+See [scope/build/protection gates](EAE/README.md), [exact provenance](docs/EAE_3D_SOURCE_PROVENANCE.json)
+and [historical validation](docs/LOCAL_INTEGRATION_20261028.md).
+`master` contains refactored1D EAE and the Python workflow; `EAE_1D_MAKE`
+freezes original master2f2733a84013faeeb6d705246b61678848f44ef5.
+This branch has dormant operator modules for provenance but no active native
+LTE/pore/port extensions. No new builds/tests were run for publication.
+
+---
+
 ## Fire Dynamics Simulator and Smokeview
 
 *Continuous Integration. Continuous Improvement.*

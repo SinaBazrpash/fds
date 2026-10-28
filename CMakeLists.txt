@@ -24,6 +24,13 @@ add_executable(fds
     Source/main.f90
     Source/prec.f90
     Source/eae.f90
+    Source/coupled.f90
+    Source/eae_remap.f90
+    Source/eae_swept.f90
+    Source/eae_pore.f90
+    Source/eae_pore_network.f90
+    Source/eae_retained.f90
+    Source/eae_pore_checkpoint.f90
     Source/cons.f90
     Source/chem.f90
     Source/prop.f90

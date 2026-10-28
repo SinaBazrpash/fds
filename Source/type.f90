@@ -273,6 +273,7 @@ TYPE INTERNAL_NODE_TYPE
    INTEGER, ALLOCATABLE, DIMENSION(:) :: ALTERNATE_WALL_TYPE    !< Type of alternate WALL cell (thin or not thin)
    INTEGER, ALLOCATABLE, DIMENSION(:) :: ALTERNATE_WALL_IOR     !< Orientation index of alternate WALL cell
    REAL(EB), ALLOCATABLE, DIMENSION(:) :: ALTERNATE_WALL_WEIGHT !< Weight factor of alternate WALL cell
+   INTEGER :: E3_CELL_ID=0 ! Stable physical-volume mirror index; rebuilt with HT3D geometry
    INTEGER :: ALTERNATE_WALL_COUNT=0                            !< Number of WALL cells that overlap the primary
    INTEGER :: I=-1                                              !< I index of the node
    INTEGER :: J=-1                                              !< J index of the node
@@ -468,7 +469,7 @@ TYPE EXTERNAL_WALL_TYPE
    INTEGER :: NOM                                     !< Number of the adjacent (Other) Mesh
    INTEGER :: NIC_MIN                                 !< Start of indices for the cell in the other mesh
    INTEGER :: NIC_MAX                                 !< End of indices for the cell in the other mesh
-   INTEGER :: NIC=0                                   !< NIC_MAX-NIC_MIN
+   INTEGER :: NIC                                     !< NIC_MAX-NIC_MIN
    INTEGER :: IIO_MIN                                 !< Minimum I index of adjacent cell in other mesh
    INTEGER :: IIO_MAX                                 !< Maximum I index of adjacent cell in other mesh
    INTEGER :: JJO_MIN                                 !< Minimum J index of adjacent cell in other mesh
@@ -934,6 +935,7 @@ TYPE SURFACE_TYPE
    REAL(EB) :: FTP_N                                   !< Flux time product integral exponent
    REAL(EB) :: FTP_Q_CR                                !< Critical heat flux for flux time product (kW/m2)
    REAL(EB) :: FTP_FAC                                 !< Exponent adjustment for kW to W conversion
+   LOGICAL :: EAE_HT3D=.FALSE. ! Explicit, fail-closed experimental coupling control
    REAL(EB), DIMENSION(3) :: HT3D_WEIGHT=ONTH          !< Directional weighting factor for HT3D mass transport
 
    REAL(EB), ALLOCATABLE, DIMENSION(:) :: DX,RDX,RDXN,X_S,DX_WGT,MF_FRAC,PARTICLE_INSERT_CLOCK
