@@ -51,5 +51,9 @@
   "historical_installation": "experimental_3d_20261021/local_integration_20261028_01",
   "historical_report": "reports/LOCAL_INTEGRATION_20261028.md",
   "publication_validation": "Only hash/inventory/static inspection; no new compilation or simulations",
-  "no_source23": true
+  "no_source23": true,
+  "historical_build_manifest": "docs/EAE_3D_HISTORICAL_BUILD.json",
+  "historical_native_example": "EAE/examples/fixed_volume_native_reference.fds",
+  "historical_example_sha256": "a62375e9684c65857aee751662e125754167883b5999b7c2fc950209e2dad9d4",
+  "example_scope": "Exact previously executed fixed_gas input from local installation validation; no new run; parameters are a numerical reference, not fitted experimental properties."
 }

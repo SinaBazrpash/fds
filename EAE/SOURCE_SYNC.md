@@ -1,3 +1,9 @@
+> Historical1D publication record below. The current3D branch instead publishes
+> the exact installed41-source snapshot. See
+> [current provenance](../docs/EAE_3D_SOURCE_PROVENANCE.json) and
+> [current scope](README.md); do not use the historical eight-file hashes below
+> as this branch's installation manifest.
+
 # Source synchronization review
 
 Upstream baseline: `b2bd16808fa3c76466b4a5eb83335575b611abf1` (firemodels/fds master).

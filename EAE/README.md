@@ -38,3 +38,20 @@ import library. Alternate Make/CMake builds were not newly built or validated.
 Historical scope, finite-step mass residuals, incomplete full CFD energy closure,
 shared-upstream findings and restart/MPI restrictions remain exactly as documented.
 The publication performs no builds/simulations and makes no broader claims.
+
+## Runnable historical reference and Python mapping
+
+[EAE/examples/fixed_volume_native_reference.fds](examples/fixed_volume_native_reference.fds)
+is the exact previously executed native fixed_gas input, copied without rerunning.
+Its Gaussian mixture/32-node quadrature is a numerical reference, **not** the
+Python program's fitted50..450kJ/mol180-node model. Do not silently substitute
+its parameters for a fitted material. Native output is CHID-based; run in a fresh
+output directory with an appropriately built executable. The source SHA matches
+the existing installed validation; alternate platform builds remain unverified.
+
+See the [master Python-to-FDS guide](https://github.com/SinaBazrpash/fds/blob/master/docs/EAE_FDS_WORKFLOW.md)
+for actual input keyword mapping and [Python/output documentation](https://github.com/SinaBazrpash/fds/blob/master/docs/EAE_PYTHON_GUIDE.md).
+The same Gaussian MATL fields apply on this branch; no LTE/pore/port fields are
+needed or supported. The [historical build manifest](../docs/EAE_3D_HISTORICAL_BUILD.json)
+records exact source hashes, compile order/flags and private MPI link-input hashes.
+It is historical evidence, not a newly executed build.
