@@ -1,0 +1,8 @@
+# Runtime versions are recorded per material; no dependency installation was performed for publication.
+numpy
+pandas
+scipy
+matplotlib
+openpyxl
+# Required only for legacy .xls input (xlsx/csv do not need it):
+xlrd

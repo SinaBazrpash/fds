@@ -115,3 +115,19 @@ Build/cmakeb/
 # Ignore everything under such directories
 *UNTRACKED*/**
 
+
+# EAE analysis output and local Python environment (keep small example CSV tracked).
+.venv/
+__pycache__/
+*.pyc
+/EAE_Output/
+**/Checkpoints/
+**/Logs/
+**/Plots/01_QC/
+**/Plots/02_DAEM_Fitting/
+**/Plots/03_Eeff_A_Reconstruction/
+**/Plots/04_Energy_Distributions/
+**/Plots/05_Eeff/
+**/Plots/06_f_alpha/
+**/*_DAEM_results.xlsx
+**/*_DAEM_results.writing.xlsx

@@ -1,3 +1,7 @@
+> Historical synchronization record, preserved unchanged below. It describes
+> the original EAE publication, not the current native-module refactor.
+> Current inventory and limitations: [EAE_REFACTOR_REVIEW](../docs/EAE_REFACTOR_REVIEW.md).
+
 # Source synchronization review
 
 Upstream baseline: `b2bd16808fa3c76466b4a5eb83335575b611abf1` (firemodels/fds master).

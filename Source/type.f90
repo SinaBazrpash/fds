@@ -8,7 +8,6 @@
 MODULE TYPES
 
 USE PRECISION_PARAMETERS
-USE EAE_DAEM, ONLY: EAE_CONFIG,EAE_STATE
 USE GLOBAL_CONSTANTS, ONLY : IAXIS,JAXIS,KAXIS,MAX_DIM,LOW_IND,HIGH_IND
 
 #ifdef WITH_MKL
@@ -21,6 +20,20 @@ USE HYPRE_INTERFACE, ONLY : HYPRE_ZM_TYPE
 #endif
 
 IMPLICIT NONE (TYPE,EXTERNAL)
+
+! Material-specific EAE configuration and conservative solid-bin inventories.
+TYPE EAE_CONFIG
+   LOGICAL :: ENABLED=.FALSE.
+   INTEGER :: K=0,NN=0
+   REAL(EB) :: A=0._EB,EMIN=0._EB,EMAX=0._EB
+   REAL(EB), ALLOCATABLE :: ENERGY(:),WEIGHT(:)
+END TYPE
+TYPE EAE_STATE
+   ! Mass of bins in a fixed 1 m2 planar column, kg (numerically kg/m2).
+   ! REFERENCE is transported with exactly the same conservative remapping.
+   REAL(EB), ALLOCATABLE :: MASS(:,:),REFERENCE(:),TRIAL(:,:)
+END TYPE
+
 
 !> \brief Arrays to hold derived type (WALL, CFACE, or PARTICLE) components for I/O or MPI exchanges
 

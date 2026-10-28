@@ -1,34 +1,51 @@
-"""Static publication checks only; never invokes a compiler, make or FDS."""
+"""Fast static checks only: no imports of eae.py, compilers, fits or simulations."""
 from pathlib import Path
-import re,json
-r=Path(__file__).resolve().parents[1]
-checks={
- 'Source/eae.f90':['MODULE EAE_DAEM','SUBROUTINE EAE_GL','SUBROUTINE EAE_TRIAL','SUBROUTINE EAE_DIAGNOSTICS','T_END','EAE_STATE_VERSION'],
- 'Source/type.f90':['USE EAE_DAEM','TYPE(EAE_CONFIG)','TYPE(EAE_STATE)'],
- 'Source/read.f90':['EAE_A','EAE_K','EAE_MU','EAE_SIGMA','EAE_PI','EAE_NODES','EAE_SETUP','EAE_TGA_PRESCRIBED','EAE TGA: upstream dedicated TGA loop'],
- 'Source/func.f90':['EAE','REFERENCE','MASS'],
- 'Source/dump.f90':['FDSEAE01','EAE_CHECK_RESTART','EAE_DIAGNOSTICS','CASE(102:104)'],
- 'Source/data.f90':['EAE_CONVERSION','EAE_REMAINING_MASS','EAE_EEFF'],
- 'Source/cons.f90':['TGA_ANALYSIS_REQUESTED','EAE_TGA_LINEAR'],
- 'Source/wall.f90':['pending bin depletion differs from accepted FDS mass consumption','Forced removal does not override','SUBROUTINE TGA_EAE_ANALYSIS','Total_Solid_Mass_Normalized','EAE_SOURCE_ENERGY','EAE_T_BEGIN','REFERENCE','M_DOT_LAYER_PP','STEPS=CEILING(END_TIME/TGA_DT-1.E-9_EB)'],
- 'CMakeLists.txt':['Source/eae.f90','OUTPUT_NAME fdseae'],
- 'Build/makefile':['obj_mpi = prec.o eae.o','eae.o : prec.o','eae.obj : prec.obj','type.o : prec.o cons.o imkl.o eae.o','type.obj : prec.obj cons.obj imkl.obj eae.obj']}
-for path,tokens in checks.items():
- text=(r/path).read_text()
- for token in tokens:assert token in text,(path,token)
- assert not re.search(r'^(<<<<<<< |=======\s*$|>>>>>>> )',text,re.M),path
-# Assert the Fortran module graph resolves each internal USE and has no cycles.
+import hashlib,json,re,subprocess
+root=Path(__file__).resolve().parents[1]
+report=json.loads((root/'docs/EAE_REFACTOR_STATIC.json').read_text())
+inventory=sorted(p.name for p in (root/'Source').glob('*.f90'))
+assert inventory==report['native_fortran_inventory']
+assert not any(p.name.startswith('eae') for p in (root/'Source').glob('*.f90'))
+for name in ['Build/makefile','CMakeLists.txt']:
+    baseline=subprocess.check_output(['git','show',report['native_parent']+':'+name],cwd=root)
+    assert (root/name).read_bytes()==baseline,name
+    assert not re.search(r'eae\.(?:f90|o|obj)',(root/name).read_text(),re.I)
+original=subprocess.check_output(['git','show',report['original_master']+':Source/eae.f90'],cwd=root,text=True)
+functions=(root/'Source/func.f90').read_text()
+for name in report['moved_routines']:
+    pattern=r'^SUBROUTINE '+name+r'\(.*?^END SUBROUTINE'
+    old=re.search(pattern,original,re.M|re.S)[0]
+    new=re.search(pattern,functions,re.M|re.S)[0]
+    assert re.sub(r'\bRG\b','EAE_RG',old)==new,name
+assert 'TYPE EAE_CONFIG' in (root/'Source/type.f90').read_text()
+assert 'TYPE EAE_STATE' in (root/'Source/type.f90').read_text()
+assert 'EAE_STATE_VERSION=1' in (root/'Source/cons.f90').read_text()
+# Ordinary numerical/heat/CFD paths and MIN_LAYER_MASS are untouched by this refactor.
+for name in ['init','main','mass','divg','pres','velo','fire','radi','chem','data']:
+    assert (root/f'Source/{name}.f90').read_bytes()==subprocess.check_output(
+        ['git','show',report['original_master']+f':Source/{name}.f90'],cwd=root),name
 modules={};uses={}
-for p in (r/'Source').glob('*.f90'):
- text=p.read_text()
- for name in re.findall(r'^\s*MODULE\s+(?!PROCEDURE\b)(\w+)',text,re.M|re.I):modules[name.upper()]=p.name
- uses[p.name]=[m.upper() for m in re.findall(r'^\s*USE\s+(\w+)',text,re.M|re.I)]
+for p in (root/'Source').glob('*.f90'):
+    text=p.read_text()
+    assert not re.search(r'^(<<<<<<< |=======\s*$|>>>>>>> )',text,re.M),p.name
+    assert not re.search(r'^\s*USE\s+EAE_DAEM\b',text,re.I|re.M),p.name
+    for name in re.findall(r'^\s*MODULE\s+(?!PROCEDURE\b)(\w+)',text,re.M|re.I):
+        assert name.upper() not in modules,name
+        modules[name.upper()]=p.name
+    uses[p.name]=[m.upper() for m in re.findall(r'^\s*USE\s+(\w+)',text,re.M|re.I)]
 graph={p:{modules[m] for m in names if m in modules and modules[m]!=p} for p,names in uses.items()}
 done=set()
 def visit(p,stack):
- assert p not in stack,('module cycle',p,stack)
- if p in done:return
- for dep in graph[p]:visit(dep,stack|{p})
- done.add(p)
+    assert p not in stack,('module cycle',p,stack)
+    if p in done:return
+    for dep in graph[p]:visit(dep,stack|{p})
+    done.add(p)
 for p in graph:visit(p,set())
-print(json.dumps({'status':'PASS','checks':'source tokens, conflict markers, internal module dependency graph','files':len(checks),'modules':len(modules),'builds_or_simulations_executed':False},indent=2))
+source=(root/'eae.py').read_text();compile(source,str(root/'eae.py'),'exec')
+assert 'save_plot(plot_dir/' not in source
+assert source.count('fig.savefig(')==1 and 'finally:\n        plt.close(fig)' in source
+for folder in ['01_QC','02_DAEM_Fitting','03_Eeff_A_Reconstruction','04_Energy_Distributions','05_Eeff','06_f_alpha']:
+    assert folder in source,folder
+print(json.dumps(dict(status='PASS',fortran_units=len(inventory),added_eae_units=0,
+    native_build_files_exact=True,kinetic_body_text_equivalence=True,acyclic_module_file_graph=True,
+    python_compile_only=True,builds_simulations_imports_fits_executed=False),indent=2))

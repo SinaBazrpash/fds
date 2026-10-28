@@ -1,0 +1,30 @@
+{
+  "syntax": "PASS compile-only, not executed/imported",
+  "unchanged_scientific_function_AST": [
+    "parse_params",
+    "prepare_daem_kernel",
+    "derivative_reference",
+    "fit_residual",
+    "model_alpha",
+    "_initial_params",
+    "daem_kinetics",
+    "analyze_global",
+    "analyze_rate",
+    "phys_scale_f",
+    "r2",
+    "rmse",
+    "normpdf",
+    "gauss_legendre"
+  ],
+  "optimizer_call_AST_unchanged": [
+    "fit_one_k",
+    "fit_global_one_k"
+  ],
+  "scientific_runtime": "NOT RUN",
+  "original_python_sha256": "389a166ef8f7a9564207594c96d613b87f948bffaabf5c9958603b6c644d9bb0",
+  "published_python_sha256": "f0d74cff1bd2acc7230ec9c002feef874e3bdbdff68fe5151208db8cb03e130f",
+  "plot_routing": "all save sites explicitly categorized; one guarded savefig; closure in finally",
+  "logs": "SETUP/RUN stdout+stderr tee to per-material Logs/execution.log; tracebacks/warnings; statically inspected only",
+  "excel": "sheet definitions statically inspected; no workbook generated or opened",
+  "checkpoint": "full source/input/settings/version identity, finite/shape checks, atomic cache replacement; no runtime check"
+}

@@ -23,7 +23,6 @@ set_property(CACHE MKL_LINK PROPERTY STRINGS static dynamic)
 add_executable(fds
     Source/main.f90
     Source/prec.f90
-    Source/eae.f90
     Source/cons.f90
     Source/chem.f90
     Source/prop.f90
@@ -56,7 +55,6 @@ add_executable(fds
     Source/read.f90
     Source/divg.f90
 )
-set_target_properties(fds PROPERTIES OUTPUT_NAME fdseae)
 target_include_directories(fds PRIVATE .)
 
 # Get various properties about the time and git revision. These can be

@@ -1,3 +1,11 @@
+> **Current master update (2026-10-28):** EAE types now live in native type.f90,
+> constants in cons.f90 and kinetic routines in func.f90/PHYSICAL_FUNCTIONS.
+> There is no Source/eae.f90 or EAE build entry on master. The original layout
+> is frozen on EAE_1D_MAKE. See [current workflow](../docs/EAE_FDS_WORKFLOW.md)
+> and [static-only refactor status](../docs/EAE_REFACTOR_REVIEW.md).
+> The historical model/input/TGA discussion below is retained. Its build and
+> source-publication descriptions refer to the frozen pre-refactor layout.
+
 # Experimental FDS-EAE Global DAEM extension
 
 This source-only publication is based on upstream firemodels/fds master

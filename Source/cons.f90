@@ -11,6 +11,11 @@ USE MPI_F08
 USE ISO_FORTRAN_ENV, ONLY: ERROR_UNIT
 IMPLICIT NONE (TYPE,EXTERNAL)
 
+! Opt-in1D EAE flags and serialized state version (no new compilation unit).
+INTEGER, PARAMETER :: EAE_MAX_K=15,EAE_MAX_NODES=512,EAE_STATE_VERSION=1
+LOGICAL :: EAE_ACTIVE=.FALSE.
+
+
 ! constants used by smokeview for drawing surfaces
 
 INTEGER, PARAMETER :: SMV_REGULAR=0              !< Parameter for smokeview drawing: surface drawn as a solid
